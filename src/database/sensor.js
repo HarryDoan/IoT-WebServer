@@ -1,6 +1,7 @@
 const DB = require("./db.json");
 const { saveToDatabase } = require("./utils");
 
+
 const getAllSensors = () => {
   try {
     return DB.Sensors;

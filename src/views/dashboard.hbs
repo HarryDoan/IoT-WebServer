@@ -1,0 +1,27 @@
+<div class="container-fluid px-4">
+    <div class="row g-3 my-2">
+
+      
+        <a href="login?admin={{this.admin}}" class="shadow-sm text-start col-md-4 btn ">
+
+            <img src="https://dlsgc.com.vn/wp-content/uploads/2021/07/bo-loc-afa-247x247.jpg" alt="" class="card-img-top  ">
+            <div class="card-body">
+                <h5 class="card-title">{{this.data.name}}</h5>
+
+                <p class="fs-5 fw-bold text-primary">{{this.data.age}}</p>
+
+            </div>
+
+
+        </a>
+    </div>
+
+
+
+</div>
+<script>
+    var socket = io();
+    socket.on('data', (data) => {
+        document.getElementById('demo').innerHTML = data
+    });
+</script>
