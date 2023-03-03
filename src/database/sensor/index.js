@@ -1,12 +1,11 @@
-const DB = require("./db.json");
-const { saveToDatabase } = require("./utils");
-const { getUser, createUser } = require("./data")
+const DB = require("../db.json");
+const { saveToDatabase } = require("../utils");
+const { getAll, updatedSensor } = require("./sensorDatabase");
 
-const getAllUser = async () => {
+const getAllSensors = async () => {
   try {
-    const users = await getUser()
-    return users
-
+    const data = await getAll();
+    return data;
   } catch (error) {
     throw { status: 500, message: error };
   }
@@ -27,50 +26,40 @@ const getAllUser = async () => {
 //   }
 // };
 
-const createUsers = async (data) => {
-
-    const users = await getUser()
-    const isAlreadyAdded =
-     users.data.findIndex((user) => user.phone === data.phone) > -1;
-    if (isAlreadyAdded) {
-      return false;
-    }
-    createUser(data)
-    return data;
-
-};
-
-// const updateOneSensor = (SensorId, changes) => {
+// const createNewSensor = (newSensor) => {
 //   try {
 //     const isAlreadyAdded =
-//       DB.Sensors.findIndex((Sensor) => Sensor.name === changes.name) > -1;
+//       DB.Sensors.findIndex((Sensor) => Sensor.name === newSensor.name) > -1;
 //     if (isAlreadyAdded) {
 //       throw {
 //         status: 400,
-//         message: `Sensor with the name '${changes.name}' already exists`,
+//         message: `Sensor with the name '${newSensor.name}' already exists`,
 //       };
 //     }
-//     const indexForUpdate = DB.Sensors.findIndex(
-//       (Sensor) => Sensor.id === SensorId
-//     );
-//     if (indexForUpdate === -1) {
-//       throw {
-//         status: 400,
-//         message: `Can't find Sensor with the id '${SensorId}'`,
-//       };
-//     }
-//     const updatedSensor = {
-//       ...DB.Sensors[indexForUpdate],
-//       ...changes,
-//       updatedAt: new Date().toLocaleString("en-US", { timeZone:  'Asia/Bangkok' }),
-//     };
-//     DB.Sensors[indexForUpdate] = updatedSensor;
+//     DB.Sensors.push(newSensor);
 //     saveToDatabase(DB);
-//     return updatedSensor;
+//     return newSensor;
 //   } catch (error) {
 //     throw { status: error?.status || 500, message: error?.message || error };
 //   }
 // };
+
+const updateOneSensor = async (changes) => {
+  try {
+    const dataUpdated = {
+      ...changes,
+      time_updated: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Bangkok",
+      }),
+    };
+    if (dataUpdated) {
+      updatedSensor(dataUpdated);
+    }
+    return dataUpdated;
+  } catch (error) {
+    throw { status: error?.status || 500, message: error?.message || error };
+  }
+};
 
 // const deleteOneSensor = (SensorId) => {
 //   try {
@@ -91,6 +80,9 @@ const createUsers = async (data) => {
 // };
 
 module.exports = {
-  getAllUser,
-  createUsers
+  getAllSensors,
+  // createNewSensor,
+  // getOneSensor,
+  updateOneSensor,
+  // deleteOneSensor,
 };

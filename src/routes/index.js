@@ -1,4 +1,4 @@
-const v1SensorRouter = require("../v1//routes/sensorRoutes");
+const v1SensorRouter = require("../v1/routes/sensorRoutes");
 const v1UserRouter = require("../v1/routes/userRoutes");
 const dashboard = require("./dashboard");
 function route(app) {

@@ -8,11 +8,17 @@ const socketio = require("socket.io");
 const server = http.createServer(app);
 const io = socketio(server);
 const dotenv = require("dotenv").config();
+const handlebars = require("handlebars");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-app.engine(".hbs", engine({ extname: ".hbs" }));
+
+handlebars.registerHelper("concat", function () {
+  return Array.prototype.slice.call(arguments, 0, -1).join("");
+});
+
+app.engine(".hbs", engine({ extname: ".hbs", handlebars }));
 app.set("view engine", ".hbs");
 app.set("views", path.join(__dirname, "views"));
 

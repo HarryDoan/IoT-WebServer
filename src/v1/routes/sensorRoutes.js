@@ -7,10 +7,10 @@ router.get("/", sensorController.getAllSensors);
 
 router.get("/:SensorId", sensorController.getOneSensor);
 
-router.post("/", sensorController.createNewSensor);
+// router.post("/", sensorController.createNewSensor);
 
-router.patch("/:SensorId", sensorController.updateOneSensor);
+router.patch("/", sensorController.updateOneSensor);
 
-router.delete("/:SensorId", sensorController.deleteOneSensor);
+// router.delete("/:SensorId", sensorController.deleteOneSensor);
 
 module.exports = router;

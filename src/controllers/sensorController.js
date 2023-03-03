@@ -1,9 +1,9 @@
 const SensorService = require("../services/sensorService");
 
-const getAllSensors = (req, res) => {
+const getAllSensors = async (req, res) => {
   try {
-    const allSensors = SensorService.getAllSensors();
-    res.send({ status: "OK", data: allSensors });
+    const allSensors = await SensorService.getAllSensors();
+    res.send({ status: "OK", data: allSensors.data });
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
@@ -39,59 +39,49 @@ const getOneSensor = (req, res) => {
   }
 };
 
-const createNewSensor = (req, res) => {
-  const { body } = req;
-  if (
-    !body.name ||
-    !body.mode ||
-    !body.equipment ||
-    !body.exercises ||
-    !body.trainerTips
-  ) {
-    res.status(400).send({
-      status: "FAILED",
-      data: {
-        error:
-          "One of the following keys is missing or is empty in request body: 'name', 'mode', 'equipment', 'exercises', 'trainerTips'",
-      },
-    });
-    return;
-  }
-  const newSensor = {
-    name: body.name,
-    mode: body.mode,
-    equipment: body.equipment,
-    exercises: body.exercises,
-    trainerTips: body.trainerTips,
-  };
-  try {
-    const createdSensor = SensorService.createNewSensor(newSensor);
-    res.status(201).send({ status: "OK", data: createdSensor });
-  } catch (error) {
-    res.status(error?.status || 500).send({
-      status: "FAILED",
-      data: {
-        error: error?.message || error,
-      },
-    });
-  }
-};
+// const createNewSensor = (req, res) => {
+//   const { body } = req;
+//   if (
+//     !body.name ||
+//     !body.mode ||
+//     !body.equipment ||
+//     !body.exercises ||
+//     !body.trainerTips
+//   ) {
+//     res.status(400).send({
+//       status: "FAILED",
+//       data: {
+//         error:
+//           "One of the following keys is missing or is empty in request body: 'name', 'mode', 'equipment', 'exercises', 'trainerTips'",
+//       },
+//     });
+//     return;
+//   }
+//   const newSensor = {
+//     name: body.name,
+//     mode: body.mode,
+//     equipment: body.equipment,
+//     exercises: body.exercises,
+//     trainerTips: body.trainerTips,
+//   };
+//   try {
+//     const createdSensor = SensorService.createNewSensor(newSensor);
+//     res.status(201).send({ status: "OK", data: createdSensor });
+//   } catch (error) {
+//     res.status(error?.status || 500).send({
+//       status: "FAILED",
+//       data: {
+//         error: error?.message || error,
+//       },
+//     });
+//   }
+// };
 
-const updateOneSensor = (req, res) => {
-  const {
-    body,
-    params: { SensorId },
-  } = req;
-  if (!SensorId) {
-    res.status(400).send({
-      status: "FAILED",
-      data: {
-        error: "Parameter ':SensorId' can not be empty",
-      },
-    });
-  }
+const updateOneSensor = async (req, res) => {
+  const { body } = req;
+
   try {
-    const updatedSensor = SensorService.updateOneSensor(SensorId, body);
+    const updatedSensor = await SensorService.updateOneSensor(body);
     res.send({ status: "OK", data: updatedSensor });
   } catch (error) {
     res.status(error?.status || 500).send({
@@ -117,7 +107,7 @@ const deleteOneSensor = (req, res) => {
   }
   try {
     SensorService.deleteOneSensor(SensorId);
-    res.status(204).send({ status: "OK" ,  data: "delete successful" });
+    res.status(204).send({ status: "OK", data: "delete successful" });
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
@@ -131,8 +121,8 @@ const deleteOneSensor = (req, res) => {
 module.exports = {
   getAllSensors,
   getOneSensor,
-  createNewSensor,
+  // createNewSensor,
   updateOneSensor,
-  deleteOneSensor,
+  // deleteOneSensor,
   // getRecordsForSensor,
 };

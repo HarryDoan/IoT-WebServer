@@ -1,27 +1,36 @@
 <div class="container-fluid px-4">
     <div class="row g-3 my-2">
-
-      
-        <a href="login?admin={{this.admin}}" class="shadow-sm text-start col-md-4 btn ">
-
-            <img src="https://dlsgc.com.vn/wp-content/uploads/2021/07/bo-loc-afa-247x247.jpg" alt="" class="card-img-top  ">
-            <div class="card-body">
-                <h5 class="card-title">{{this.data.name}}</h5>
-
-                <p class="fs-5 fw-bold text-primary">{{this.data.age}}</p>
-
-            </div>
-
-
-        </a>
+        {{#each data}}
+            <a /*href="login?admin={{this.admin}}" */ class="shadow-sm text-start col mx-3 btn ">
+                <h1 class="text-center text-primary">{{this.valve_name}}</h1>
+                <!-- <img src="https://dlsgc.com.vn/wp-content/uploads/2021/07/bo-loc-afa-247x247.jpg" alt="" class="card-img-top  "> -->
+                <div class="card-body">
+                    <div class="row">
+                        <h5 class="text-end col">Status:</h5>
+                        <h5 class="text-start col {{#if this.value}} text-info  {{else}} text-danger {{/if}} ">ON </h5>
+                    </div>
+                    <div class="row">
+                        <h5 class="text-end col">Pressure:</h5>
+                        <h5 class="text-start col">
+                            {{this.value}}
+                        </h5>
+                    </div>
+                    <div class="form-check form-switch parent">
+                        <input type="checkbox" id="{{concat 'togBtn' @index}}" value="true" class="form-check-input"
+                            checked>
+                    </div>
+                    <p class="fs-5 fw-bold text-primary">{{this.data.age}}</p>
+                </div>
+            </a>
+        {{/each}}
     </div>
-
-
-
 </div>
 <script>
-    var socket = io();
-    socket.on('data', (data) => {
-        document.getElementById('demo').innerHTML = data
+    $(document).ready(function () {
+        $('input[type="checkbox"]').click(function () {
+            var checkboxId = $(this).attr('id');
+            var isChecked = $(this).is(':checked');
+            console.log('Checkbox with ID ' + checkboxId + ' is ' + (isChecked ? 'checked' : 'unchecked'));
+        });
     });
 </script>

@@ -1,10 +1,10 @@
+const database = require("../database/sensor/sensorDatabase");
 class DashboardController {
   dashboard(req, res) {
-    res.render("dashboard", {
-      data: {
-        name: "Dong",
-        age: 23,
-      },
+    let data = null;
+    database.getAll().then((r) => {
+      data = r.data;
+      res.render("dashboard", { data: data });
     });
   }
 }
