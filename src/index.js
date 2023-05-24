@@ -26,7 +26,7 @@ const route = require("./routes/index");
 const SocketServices = require("./services/socket");
 
 io.on("connection", SocketServices.connection);
-const PORT = process.env.PORT || 1234;
+const PORT = process.env.PORT || 3006;
 
 route(app);
 

@@ -1,3 +1,4 @@
+const { log } = require("handlebars");
 const SensorService = require("../services/sensorService");
 
 const getAllSensors = async (req, res) => {

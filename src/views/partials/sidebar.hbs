@@ -1,16 +1,82 @@
 <div class="bg-white shadow-sm" id="sidebar-wrapper">
-    <img width="250" class="sidebar-heading " src="img/my_name.png"></img>
-    <div class="list-group list-group-flush my-3">
-        <a href="/api" class="list-group-item list-group-item-action bg-transparent second-text fw-bold active"><i
-                        class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
-        <a href="http://saigonvalve.com/category/du-an/" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-project-diagram me-2"></i>Dự Án</a>
-        <a href="http://saigonvalve.com/san-pham/" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-shopping-cart me-2"></i>Sản Phẩm</a>
-        <a href="http://saigonvalve.com/category/tin-tuc/" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-newspaper me-2"></i>Tin Tức</a>
-        <a href="http://saigonvalve.com/lien-he/" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-address-card me-2"></i>Liên Hệ</a>
-        <a href="http://saigonvalve.com/gioi-thieu/" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-address-card me-2"></i>Giới Thiệu</a>
-
+    <img width="250" class="sidebar-heading my-3"
+        src="https://wietech.com.vn/wp-content/uploads/2023/05/logo-wietech-1536x353-1.png" />
+    <div class="list-group">
+        <a id="dashboard" href="*" class="list-group-item list-group-item-action fw-bold nav-link">
+            <i class="fas fa-tachometer-alt me-2"></i>Dashboard </a>
+        <a id="chart" href="*" class="list-group-item list-group-item-action fw-bold nav-link">
+            <i class="fas fa-chart-line me-2"></i>Chart </a>
+        <a id="history" href="/123123" class="list-group-item list-group-item-action fw-bold nav-link">
+            <i class="fas fa-history me-2"></i>History </a>
+        <a id="schedule" href="*" class="list-group-item list-group-item-action fw-bold nav-link">
+            <i class="fas fa-calendar-alt me-2"></i>Schedule </a>
     </div>
 </div>
+<div>
+    <span id="dashboard_token">{{URL_token.dashboardURL}}</span>
+    <span id="chart_token">{{URL_token.chartURL}}</span>
+    <span id="history_token">{{URL_token.historyURL}}</span>
+    <span id="schedule_token">{{URL_token.scheduleURL}}</span>
+</div>
+<script>
+    $(document).ready(function () {
+
+        const dashboardToken = document.getElementById('dashboard_token');
+        const chartToken = document.getElementById('chart_token');
+        const historyToken = document.getElementById('history_token');
+        const scheduleToken = document.getElementById('schedule_token');
+
+        const dashboardTokenContent = dashboardToken.textContent;
+        const chartTokenContent = chartToken.textContent;
+        const historyTokenContent = historyToken.textContent;
+        const scheduleTokenContent = scheduleToken.textContent;
+
+        const myDashboardLink = document.getElementById('dashboard');
+        const myChartLink = document.getElementById('chart');
+        const myHistoryLink = document.getElementById('history');
+        const myScheduleLink = document.getElementById('schedule');
+
+
+        // Set the href attribute
+        myDashboardLink.href = `${dashboardTokenContent}`;
+        myChartLink.href = `${chartTokenContent}`;
+        myHistoryLink.href = `${historyTokenContent}`;
+        myScheduleLink.href = `${scheduleTokenContent}`;
+
+        dashboardToken.textContent = ''
+        chartToken.textContent = ''
+        historyToken.textContent = ''
+        scheduleToken.textContent = ''
+
+
+        // Load the initial page content    
+        loadPage(window.location.pathname);
+
+        // Handle navigation clickss
+        $('.nav-link').click(function (event) {
+            // Prevent default behavior
+            // event.preventDefault();
+
+            // Get the URL and load the page content using jQuery's load() method
+            let url = $(this).attr('href');
+            $('#page-content').load(url);
+
+            // Set the "active" class on the appropriate navigation link
+            $('.nav-link').removeClass('active');
+            $(this).addClass('active');
+
+            // Update the URL
+            history.pushState(null, null, url);
+        });
+
+        // Handle back/forward button clicks
+        $(window).on('popstate', function () {
+            loadPage(window.location.pathname);
+        });
+    });
+
+    function loadPage(url) {
+        $('.nav-link').removeClass('active');
+        $(`.nav-link[href="${url}"]`).addClass('active');
+    }
+</script>

@@ -1,7 +1,7 @@
 const DB = require("../db.json");
 const { saveToDatabase } = require("../utils");
 const { getAll, updatedSensor } = require("./sensorDatabase");
-
+const moment = require("moment");
 const getAllSensors = async () => {
   try {
     const data = await getAll();
@@ -46,15 +46,21 @@ const getAllSensors = async () => {
 
 const updateOneSensor = async (changes) => {
   try {
+    const inputDate = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Bangkok",
+    });
+    const outputFormat = "YYYY-MM-DD HH:mm:ss";
+
+    const formattedDate = moment(inputDate, "MM/DD/YYYY, h:mm:ss A").format(
+      outputFormat
+    );
     const dataUpdated = {
       ...changes,
-      time_updated: new Date().toLocaleString("en-US", {
-        timeZone: "Asia/Bangkok",
-      }),
+      time_updated: formattedDate,
     };
-    if (dataUpdated) {
-      updatedSensor(dataUpdated);
-    }
+
+    updatedSensor(dataUpdated);
+
     return dataUpdated;
   } catch (error) {
     throw { status: error?.status || 500, message: error?.message || error };

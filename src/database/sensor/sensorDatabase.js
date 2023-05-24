@@ -14,11 +14,41 @@ async function getAll(page = 1) {
   };
 }
 
+async function getHistory(page = 1) {
+  const rows = await db.query(`SELECT * FROM History`);
+
+  const data = helper.emptyOrRows(rows);
+  const meta = { page };
+
+  return {
+    data,
+    meta,
+  };
+}
+
+async function getSchedule(page = 1) {
+  const rows1 = await db.query(`SELECT * FROM Schedule_Sensor_1`);
+  const rows2 = await db.query(`SELECT * FROM Schedule_Sensor_2`);
+
+  const data1 = helper.emptyOrRows(rows1);
+  const data2 = helper.emptyOrRows(rows2);
+  const data = {
+    data1,
+    data2,
+  };
+  const meta = { page };
+
+  return {
+    data,
+    meta,
+  };
+}
+
 async function updatedSensor(data) {
-  console.log(data);
-  const dataSensor = await db.query(
-    `UPDATE Sensors SET value = ${data.value}, time_updated = '${data.time_updated}' WHERE sensor_name = '${data.sensor_name}'`
-  );
+  const query =
+    "UPDATE Sensors SET pressure = ?, time_updated = ? WHERE sensor_id = ?";
+  const params = [data.pressure, data.time_updated, data.sensor_id];
+  const dataSensor = await db.query(query, params);
 
   return dataSensor;
 }
@@ -26,4 +56,6 @@ async function updatedSensor(data) {
 module.exports = {
   getAll,
   updatedSensor,
+  getHistory,
+  getSchedule,
 };

@@ -1,0 +1,73 @@
+<!-- Modal body -->
+<h1 id="user_token">{{this.user_token}}</h1>
+<div class="modal-body" style="max-height: 500px; overflow-y: scroll;">
+    <div class="text-end">
+        <button type="button" class="btn btn-primary" onclick="exportToExcel('History', 'test', 'data')"> Xuất file
+            Excel
+    </div>
+    </button>
+    <table class="table">
+        <thead>
+            <tr class="text-center">
+                <th scope="col">Pressure 1</th>
+                <th scope="col">Pressure 2</th>
+                <th scope="col">Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each history}}
+                <tr>
+                    <!-- <th scope="row">1</th> -->
+                    <td class="text-center">{{this.pressure1}}</td>
+                    <td class="text-center">{{this.pressure2}}</td>
+                    <td class="text-center">{{this.time}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+<script>
+
+
+    const userToken = document.getElementById('user_token');
+    const userTokenContent = userToken.textContent;
+    if (!userTokenContent) {
+        window.location.href = `./`;
+    }
+    else {
+        userToken.textContent = '';
+    }
+
+
+    const socket = io();
+    socket.emit("history", 'Wietech')
+    // export Excel
+    let historyList
+
+    socket.on('list_history_Mysql', (data) => {
+        historyList = data
+
+    })
+
+    function exportToExcel(fileName, sheetName, table) {
+        if (historyList.length === 0) {
+            console.error("No data to export");
+            return;
+        }
+
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.json_to_sheet(historyList);
+
+        ws['!cols'] = [
+            { wch: 10, align: 'center' },
+            { wch: 15, align: 'center' },
+            { wch: 15, align: 'center' },
+            { wch: 25, align: 'center' }
+        ];
+
+        XLSX.utils.book_append_sheet(wb, ws, sheetName);
+        XLSX.writeFile(wb, `${fileName}.xlsx`);
+    }
+
+
+</script>

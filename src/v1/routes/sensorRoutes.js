@@ -9,7 +9,7 @@ router.get("/:SensorId", sensorController.getOneSensor);
 
 // router.post("/", sensorController.createNewSensor);
 
-router.patch("/", sensorController.updateOneSensor);
+router.post("/", sensorController.updateOneSensor);
 
 // router.delete("/:SensorId", sensorController.deleteOneSensor);
 

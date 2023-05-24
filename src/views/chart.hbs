@@ -1,0 +1,162 @@
+<h2 id="admin" class="container text-info text-center">
+    {{this.admin}}
+</h2>
+<h1 id="user_token">{{this.user_token}}</h1>
+<div class="chart-container container">
+    <canvas id="myChart"></canvas>
+</div>
+<script>
+
+    const userToken = document.getElementById('user_token');
+    const userTokenContent = userToken.textContent;
+
+    if (!userTokenContent) {
+        window.location.href = `./`;
+    }
+    else {
+        userToken.textContent = '';
+    }
+
+
+    const ctx = document.getElementById('myChart').getContext("2d");
+    const socket = io();
+    const admin = document.getElementById('admin').textContent;
+    const today = new Date();
+    const timePicker = today.getHours() + ":" + today.getMinutes();
+
+    let dataSensorV1 = 0
+    let dataSensorV2 = 0
+    let historyList
+    let myChart = null;
+    let list_history_show_update = []
+    let intervalId
+    // const gradientV1 = ctx.createLinearGradient(0, 0, 0, 400);
+    // gradientV1.addColorStop(0, 'rgba(220,20,60,0.5)');
+    // gradientV1.addColorStop(1, 'rgba(220,20,60,0)');
+    // const gradientV2 = ctx.createLinearGradient(0, 0, 0, 400);
+    // gradientV2.addColorStop(0, 'rgba(55, 192, 250,1)');
+    // gradientV2.addColorStop(1, 'rgba(55, 192, 250,0)');
+    socket.emit('admin', admin.trim())
+
+    socket.on('p_valve_1', (data) => {
+
+        dataSensorV1 = data
+    });
+    socket.on('p_valve_2', (data) => {
+
+        dataSensorV2 = data
+    });
+
+
+    socket.on('list_pressure', (e) => {
+        clearInterval(intervalId)
+        list_history_show_update = e || []
+        let formChartDataV1 = e?.map(item => {
+            return item?.p_valve_1
+        }) || []
+
+        let formChartDataV2 = e?.map(item => {
+            return +item?.p_valve_2
+        }) || []
+
+        let formChartLabels = e?.map(item => {
+            return item?.time
+        }) || []
+        if (myChart !== null) {
+            myChart.destroy();
+        }
+        myChart = new Chart(ctx, {
+
+            type: 'line',
+            data: {
+                labels: formChartLabels,
+                datasets: [{
+                    "label": "Áp suất Van 1",
+                    "data": formChartDataV1,
+                    "fill": false,
+                    "borderColor": "rgb(220,20,60)",
+                    "lineTension": 0.1,
+                    // "backgroundColor": gradientV1
+                }, {
+                    "label": "Áp suất Van 2",
+                    "data": formChartDataV2,
+                    "fill": false,
+                    "borderColor": "rgb(55, 192, 250)",
+                    "lineTension": 0.1,
+                    // "backgroundColor": gradientV2
+
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 50,
+                        max: 100,
+                        ticks: {
+
+                            stepSize: 10
+                        }
+                    },
+
+                }
+            }
+        });
+
+        intervalId = setInterval(() => {
+            let today = new Date();
+            let time = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear() + "  " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+            if (formChartDataV1?.length > 9) {
+
+                formChartDataV1.push(dataSensorV1);
+                formChartDataV2.push(dataSensorV2);
+                formChartLabels.push(time);
+                myChart.update()
+                formChartDataV1.shift()
+                formChartDataV2.shift()
+                formChartLabels.shift()
+
+            }
+            if (list_history_show_update?.length > 9) {
+
+                list_history_show_update.shift()
+                list_history_show_update.push({
+                    p_valve_1: dataSensorV1,
+                    time: time,
+                    p_valve_2: dataSensorV2,
+
+                })
+            }
+            else {
+
+                list_history_show_update?.push({
+                    p_valve_1: dataSensorV1,
+                    time: time,
+                    p_valve_2: dataSensorV2,
+
+                })
+
+                formChartDataV1?.push(dataSensorV1);
+                formChartDataV2?.push(dataSensorV2);
+                formChartLabels?.push(time);
+                myChart.update()
+
+                console.log('this is history update1: ', list_history_show_update)
+
+            }
+
+        }, 5000);
+
+    });
+
+    var database = firebase.database();
+    // Set data in the Realtime Database
+
+    window.onbeforeunload = function () {
+        console.log("reload page: ", intervalId);
+        clearInterval(intervalId)
+        database.ref(`EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/${admin.trim()}/history_pressure`).set(list_history_show_update);
+    };
+
+</script>

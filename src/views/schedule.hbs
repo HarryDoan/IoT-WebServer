@@ -1,0 +1,68 @@
+<h1 id="user_token">{{this.user_token}}</h1>
+<!-- Modal Header -->
+<div class="modal-header">
+    <h1 class="modal-title">Hẹn Giờ</h1>
+    <!-- <button type="button" class="close" data-dismiss="modal">×</button> -->
+</div>
+<div class="container" style="max-height: 500px; overflow-y: scroll;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="text-center">Schedule Valve 1</th>
+                <th class="text-center">Schedule Valve 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Status Valve</th>
+                                <th class="text-center">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each list_schedule_valve1}}
+                                <tr>
+                                    <td class="text-center">{{#if this.status_valve}} ON {{else}} OFF {{/if}}
+                                    </td>
+                                    <td class="text-center">{{this.time_work}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Status Valve</th>
+                                <th class="text-center">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each list_schedule_valve2}}
+                                <tr>
+                                    <td class="text-center">{{#if this.status_valve}} ON {{else}} OFF {{/if}}
+                                    </td>
+                                    <td class="text-center">{{this.time_work}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Modal footer -->
+<script>
+    const userToken = document.getElementById('user_token');
+    const userTokenContent = userToken.textContent;
+    if (!userTokenContent) {
+        window.location.href = `./`;
+    }
+    else {
+        userToken.textContent = '';
+    }</script>

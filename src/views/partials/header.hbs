@@ -1,18 +1,33 @@
-<div id="page-content-wrapper">
+<div class="header_tab shadow-sm bg-body rounded" id="page-content-wrapper">
     <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
-        <div class="d-flex align-items-center">
-            <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-            <h2 class="fs-2 m-0">Dashboard</h2>
+        <div class="container-fluid row">
+            <div class="d-flex align-items-center col">
+                <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
+                <!-- <h2 class="fs-2 m-0">Dashboard</h2> -->
+            </div>
+            <div class="d-flex justify-content-end col">
+                <div class="col-2 mx-1">
+                    <i class="fas fa-regular fa-bell" id="menu-toggle"></i>
+                </div>
+                <div class="col-2 mx-3 dropdown">
+                    <a class="icon_wrench dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fas fa-regular fa-wrench" id="menu-toggle"></i>
+                    </a>
+                    <ul class="setting dropdown-menu bi-caret-down-fill text-center"
+                        aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Mode 1</a></li>
+                        <li><a class="dropdown-item" href="#">Mode 2</a></li>
+                        <li><a class="dropdown-item" href="#">Mode 3</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user me-2"></i>{{text}}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -22,5 +37,12 @@
                     </ul>
                 </li>
             </ul>
-        </div>
+        </div> -->
     </nav>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+        </div>
+    </div>

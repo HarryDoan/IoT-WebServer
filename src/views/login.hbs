@@ -1,0 +1,48 @@
+<div class="login_style container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-lg-4 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="login_title card-title text-center">LOGIN</h4>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="login_btn btn text-white">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var database = firebase.database();
+    const socket = io();
+
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+
+        socket.emit("login", {
+            username, password
+        })
+
+        socket.on("bingo_password", function (token) {
+
+            window.location.href = `./dashboard?token=${token}`;
+
+        })
+
+
+    });
+</script>
