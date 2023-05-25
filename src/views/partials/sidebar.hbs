@@ -2,54 +2,20 @@
     <img width="250" class="sidebar-heading my-3"
         src="https://wietech.com.vn/wp-content/uploads/2023/05/logo-wietech-1536x353-1.png" />
     <div class="list-group">
-        <a id="dashboard" href="*" class="list-group-item list-group-item-action fw-bold nav-link">
+        <a id="dashboard" href="/dashboard" class="list-group-item list-group-item-action fw-bold nav-link">
             <i class="fas fa-tachometer-alt me-2"></i>Dashboard </a>
-        <a id="chart" href="*" class="list-group-item list-group-item-action fw-bold nav-link">
+        <a id="chart" href="/chart" class="list-group-item list-group-item-action fw-bold nav-link">
             <i class="fas fa-chart-line me-2"></i>Chart </a>
-        <a id="history" href="/123123" class="list-group-item list-group-item-action fw-bold nav-link">
+        <a id="history" href="/history" class="list-group-item list-group-item-action fw-bold nav-link">
             <i class="fas fa-history me-2"></i>History </a>
-        <a id="schedule" href="*" class="list-group-item list-group-item-action fw-bold nav-link">
+        <a id="schedule" href="/schedule" class="list-group-item list-group-item-action fw-bold nav-link">
             <i class="fas fa-calendar-alt me-2"></i>Schedule </a>
     </div>
-</div>
-<div>
-    <span id="dashboard_token">{{URL_token.dashboardURL}}</span>
-    <span id="chart_token">{{URL_token.chartURL}}</span>
-    <span id="history_token">{{URL_token.historyURL}}</span>
-    <span id="schedule_token">{{URL_token.scheduleURL}}</span>
 </div>
 <script>
     $(document).ready(function () {
 
-        const dashboardToken = document.getElementById('dashboard_token');
-        const chartToken = document.getElementById('chart_token');
-        const historyToken = document.getElementById('history_token');
-        const scheduleToken = document.getElementById('schedule_token');
-
-        const dashboardTokenContent = dashboardToken.textContent;
-        const chartTokenContent = chartToken.textContent;
-        const historyTokenContent = historyToken.textContent;
-        const scheduleTokenContent = scheduleToken.textContent;
-
-        const myDashboardLink = document.getElementById('dashboard');
-        const myChartLink = document.getElementById('chart');
-        const myHistoryLink = document.getElementById('history');
-        const myScheduleLink = document.getElementById('schedule');
-
-
-        // Set the href attribute
-        myDashboardLink.href = `${dashboardTokenContent}`;
-        myChartLink.href = `${chartTokenContent}`;
-        myHistoryLink.href = `${historyTokenContent}`;
-        myScheduleLink.href = `${scheduleTokenContent}`;
-
-        dashboardToken.textContent = ''
-        chartToken.textContent = ''
-        historyToken.textContent = ''
-        scheduleToken.textContent = ''
-
-
-        // Load the initial page content    
+        // Load the initial page content
         loadPage(window.location.pathname);
 
         // Handle navigation clickss

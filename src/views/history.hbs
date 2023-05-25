@@ -1,5 +1,4 @@
 <!-- Modal body -->
-<h1 id="user_token">{{this.user_token}}</h1>
 <div class="modal-body" style="max-height: 500px; overflow-y: scroll;">
     <div class="text-end">
         <button type="button" class="btn btn-primary" onclick="exportToExcel('History', 'test', 'data')"> Xuất file
@@ -27,16 +26,6 @@
     </table>
 </div>
 <script>
-
-
-    const userToken = document.getElementById('user_token');
-    const userTokenContent = userToken.textContent;
-    if (!userTokenContent) {
-        window.location.href = `./`;
-    }
-    else {
-        userToken.textContent = '';
-    }
 
 
     const socket = io();

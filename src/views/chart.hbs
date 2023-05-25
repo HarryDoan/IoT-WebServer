@@ -1,22 +1,10 @@
 <h2 id="admin" class="container text-info text-center">
     {{this.admin}}
 </h2>
-<h1 id="user_token">{{this.user_token}}</h1>
 <div class="chart-container container">
     <canvas id="myChart"></canvas>
 </div>
 <script>
-
-    const userToken = document.getElementById('user_token');
-    const userTokenContent = userToken.textContent;
-
-    if (!userTokenContent) {
-        window.location.href = `./`;
-    }
-    else {
-        userToken.textContent = '';
-    }
-
 
     const ctx = document.getElementById('myChart').getContext("2d");
     const socket = io();

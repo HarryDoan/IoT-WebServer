@@ -1,6 +1,5 @@
 <div class="px-4">
     <div class="row g-3 my-2">
-        <h1 id="user_token">{{this.user_token}}</h1>
         {{#each data}}
             <div class="row shadow-sm text-center col mx-3 ">
                 <h1 class="text-center text-white bg-secondary bg-gradient">{{this.valve_name}}</h1>
@@ -63,14 +62,14 @@
     const socket = io();
     let switchStatusValveSchedule = true;
 
-    const userToken = document.getElementById('user_token');
-    const userTokenContent = userToken.textContent;
-    if (!userTokenContent) {
-        window.location.href = `./`;
-    }
-    else {
-        userToken.textContent = '';
-    }
+    // const userToken = document.getElementById('user_token');
+    // const userTokenContent = userToken.textContent;
+    // if (!userTokenContent) {
+    //     window.location.href = `./`;
+    // }
+    // else {
+    //     userToken.textContent = '';
+    // }
 
 
 

@@ -4,10 +4,10 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="login_title card-title text-center">LOGIN</h4>
-                    <form id="loginForm">
+                    <form id="loginForm" action="/">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Phone</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
@@ -23,26 +23,20 @@
     </div>
 </div>
 <script>
-
-    var database = firebase.database();
-    const socket = io();
-
     document.getElementById("loginForm").addEventListener("submit", function (event) {
         event.preventDefault();
 
-        var username = document.getElementById("username").value;
+        var phone = document.getElementById("phone").value;
         var password = document.getElementById("password").value;
 
-        socket.emit("login", {
-            username, password
-        })
+        var form = document.getElementById("loginForm");
+        form.setAttribute("method", "POST");
+        form.setAttribute("action", "/");
 
-        socket.on("bingo_password", function (token) {
+        // Set the values of existing input fields
+        document.getElementById("phone").setAttribute("value", phone);
+        document.getElementById("password").setAttribute("value", password);
 
-            window.location.href = `./dashboard?token=${token}`;
-
-        })
-
-
+        form.submit();
     });
 </script>
