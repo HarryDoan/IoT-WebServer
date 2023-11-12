@@ -2,6 +2,8 @@ const database = require("../database/sensor/sensorDatabase");
 
 class ScheduleController {
   async index(req, res) {
+    res.locals.title = "Schedule";
+
     const r = await database.getSchedule();
     const { data1, data2 } = r.data;
 

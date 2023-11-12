@@ -2,23 +2,14 @@ const { v4: uuid } = require("uuid");
 
 const Sensor = require("../database/sensor");
 
-const getAllSensors = async () => {
+const getAllSensors = async (tableName) => {
   try {
-    const allSensors = await Sensor.getAllSensors();
+    const allSensors = await Sensor.getAllSensors(tableName);
     return allSensors;
   } catch (error) {
     throw error;
   }
 };
-
-// const getOneSensor = (SensorId) => {
-//   try {
-//     const Sensor = Sensor.getOneSensor(SensorId);
-//     return Sensor;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
 // const createNewSensor = (newSensor) => {
 //   const SensorToInsert = {
@@ -34,6 +25,15 @@ const getAllSensors = async () => {
 //     throw error;
 //   }
 // };
+
+const updateSensorValue = async (params) => {
+  try {
+    const updatedSensor = await Sensor.updateSensorValue(params);
+    return updatedSensor;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const updateOneSensor = async (changes) => {
   try {
@@ -54,8 +54,8 @@ const updateOneSensor = async (changes) => {
 
 module.exports = {
   getAllSensors,
-  // getOneSensor,
   // createNewSensor,
   updateOneSensor,
   // deleteOneSensor,
+  updateSensorValue,
 };

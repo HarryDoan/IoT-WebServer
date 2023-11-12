@@ -7,14 +7,14 @@ const dotenv = require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+const switchDatabase = require("../database/switch/switchDatabase");
+const sensorDatabase = require("../database/sensor/sensorDatabase");
 class SocketServices {
-  //connection socket
-
   connection(socket) {
     socket.on("disconnect", () => {
       console.log(`User disconnect id is ${socket.id}`);
     });
-    socket.on("login", (e) => {
+    socket.on("login", async (e) => {
       dbUser.getUser().then((data) => {
         const listUser = data?.data;
         const phone = e.username.slice(1);
@@ -26,22 +26,51 @@ class SocketServices {
               expiresIn: accessTokenLife,
             });
             socket.emit("bingo_password", token);
+
+            switchDatabase.getAll(e.username.slice(1)).then((switches) => {
+              const dataSwitch = switches.data;
+              socket.emit("dataSwitch", dataSwitch);
+            });
           } else {
             socket.emit("wrong_password", "Your password is incorrect");
           }
         }
       });
     });
+    async function fetchAndLogSensorData() {
+      try {
+        const data = await sensorDatabase.getAll("917756715");
+        socket.emit("sensor_data", data);
+      } catch (error) {
+        console.error("Error fetching sensor data:", error);
+      }
+    }
 
-    socket.on("check_user_token", (e) => {
-      jwt.verify(e, accessTokenSecret, (err, decoded) => {
-        console.log("====================================");
-        console.log(decoded);
-        console.log("====================================");
+    async function fetchAndLogSwitchesData() {
+      try {
+        const data = await switchDatabase.getAll("917756715");
+        socket.emit("switch_data", data);
+      } catch (error) {
+        console.error("Error fetching sensor data:", error);
+      }
+    }
+
+    fetchAndLogSwitchesData();
+    fetchAndLogSensorData();
+
+    const interval1 = setInterval(fetchAndLogSensorData, 2000);
+    const interval2 = setInterval(fetchAndLogSwitchesData, 2000);
+    dbrt
+      .ref("/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/Wietech")
+      .on("value", (snapshot) => {
+        const dataSensor = snapshot.val().sensors;
+        socket.emit("NewDataSensor", dataSensor);
       });
+    socket.on("updateSwitches", (switches) => {
+      switchDatabase.updateSwitchValuesByID(switches);
     });
 
-    socket.on("admin", (admin) => {
+    socket.on("admin", async (admin) => {
       // Log pressure data
       const ref_pressure_valve1 = dbrt
         .ref("EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk")
@@ -58,14 +87,6 @@ class SocketServices {
       ref_pressure_valve2.on("value", (snap) => {
         pressure_valve2 = snap.val();
         socket.emit("p_valve_2", pressure_valve2 || 0);
-      });
-
-      // Get list pressure to chart
-      const ref_history = dbrt
-        .ref("EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk")
-        .child(`${admin}/history_pressure`);
-      ref_history.on("value", (snap) => {
-        socket.emit("list_pressure", snap.val());
       });
     });
 

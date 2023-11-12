@@ -1,4 +1,5 @@
 const v1SensorRouter = require("../v1/routes/sensorRoutes");
+const v1SwitchesRouter = require("../v1/routes/switchRoutes");
 const v1UserRouter = require("../v1/routes/userRoutes");
 const dashboard = require("./dashboard");
 const chart = require("./chart");
@@ -13,8 +14,11 @@ function route(app) {
   app.use("/schedule", schedule);
   app.use("/", login);
 
-  //API routes
+  //API for Board
   app.use("/api/v1/sensors", v1SensorRouter);
+  app.use("/api/v1/switches", v1SwitchesRouter);
+
+  //API for App
   app.use("/api/v1/users", v1UserRouter);
 }
 

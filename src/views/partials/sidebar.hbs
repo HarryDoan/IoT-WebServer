@@ -1,16 +1,22 @@
-<div class="bg-white shadow-sm" id="sidebar-wrapper">
-    <img width="250" class="sidebar-heading my-3"
-        src="https://wietech.com.vn/wp-content/uploads/2023/05/logo-wietech-1536x353-1.png" />
+<!-- <div id="sidebar-wrapper" style="background-color: #0C1A32;box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);">
+    <img width="240" height="75" class="sidebar-heading my-s-3" src="img/my_logo.png" />
     <div class="list-group">
-        <a id="dashboard" href="/dashboard" class="list-group-item list-group-item-action fw-bold nav-link">
+        <a id="dashboard" href="/dashboard"
+            class="list-group-item list-group-item-action fw-bold nav-link transparent-bg">
             <i class="fas fa-tachometer-alt me-2"></i>Dashboard </a>
-        <a id="chart" href="/chart" class="list-group-item list-group-item-action fw-bold nav-link">
+        <a id="chart" href="/chart" class="list-group-item list-group-item-action fw-bold nav-link transparent-bg">
             <i class="fas fa-chart-line me-2"></i>Chart </a>
-        <a id="history" href="/history" class="list-group-item list-group-item-action fw-bold nav-link">
+        <a id="history" href="/history" class="list-group-item list-group-item-action fw-bold nav-link transparent-bg">
             <i class="fas fa-history me-2"></i>History </a>
-        <a id="schedule" href="/schedule" class="list-group-item list-group-item-action fw-bold nav-link">
+        <a id="schedule" href="/schedule"
+            class="list-group-item list-group-item-action fw-bold nav-link transparent-bg">
             <i class="fas fa-calendar-alt me-2"></i>Schedule </a>
     </div>
+    <style>
+        .transparent-bg {
+            background-color: transparent !important;
+        }
+    </style>
 </div>
 <script>
     $(document).ready(function () {
@@ -18,7 +24,7 @@
         // Load the initial page content
         loadPage(window.location.pathname);
 
-        // Handle navigation clickss
+        // Handle navigation clicks
         $('.nav-link').click(function (event) {
             // Prevent default behavior
             // event.preventDefault();
@@ -46,3 +52,13 @@
         $(`.nav-link[href="${url}"]`).addClass('active');
     }
 </script>
+<style>
+    .transparent-bg {
+        background-color: transparent !important;
+        color: white;
+    }
+
+    .transparent-bg.active {
+        color: #00CBCB;
+    }
+</style> -->

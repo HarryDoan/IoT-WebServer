@@ -1,10 +1,15 @@
-const { log } = require("handlebars");
-const SensorService = require("../services/sensorService");
+const SensorService = require("../../services/sensorService");
 
 const getAllSensors = async (req, res) => {
+  const tableName = req?.params?.slug;
+
   try {
-    const allSensors = await SensorService.getAllSensors();
-    res.send({ status: "OK", data: allSensors.data });
+    const allSensors = await SensorService.getAllSensors(tableName);
+    const listData = allSensors?.data.map((item) => {
+      return item && item?.value;
+    });
+
+    res.send({ status: "SUCCESS", data: listData?.join("-") });
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
@@ -78,6 +83,22 @@ const getOneSensor = (req, res) => {
 //   }
 // };
 
+const updateSensorValue = async (req, res) => {
+  const data = req?.params?.slug?.split(",");
+
+  try {
+    const updatedSensor = await SensorService.updateSensorValue(data);
+    res.send({ status: "SUCCESS", data: updatedSensor });
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      data: {
+        error: error?.message || error,
+      },
+    });
+  }
+};
+
 const updateOneSensor = async (req, res) => {
   const { body } = req;
 
@@ -108,7 +129,7 @@ const deleteOneSensor = (req, res) => {
   }
   try {
     SensorService.deleteOneSensor(SensorId);
-    res.status(204).send({ status: "OK", data: "delete successful" });
+    res.status(204).send({ status: "OK", data: "delete SUCCESSful" });
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
@@ -126,4 +147,5 @@ module.exports = {
   updateOneSensor,
   // deleteOneSensor,
   // getRecordsForSensor,
+  updateSensorValue,
 };

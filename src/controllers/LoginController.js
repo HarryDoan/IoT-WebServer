@@ -1,4 +1,3 @@
-const { render } = require("node-sass");
 const dbUser = require("../database/user/userDatabase");
 const jwt = require("jsonwebtoken");
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
@@ -6,7 +5,8 @@ const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
 
 class LoginController {
   async index(req, res) {
-    res.render("login");
+    const loginFail = req.query.loginFail; // Check if login failed message exists in the query parameters
+    res.render("login", { loginFail });
   }
 
   async login(req, res) {
@@ -23,10 +23,16 @@ class LoginController {
         const token = jwt.sign({ userPhone }, accessTokenSecret, {
           expiresIn: accessTokenLife,
         });
+
+        // const data = { user: token };
+        // const queryString = new URLSearchParams(data).toString();
+
         res.cookie("jwt", token);
-        res.redirect("/dashboard");
+        res.redirect(`/dashboard`);
       } else {
-        return res.status(401).send("Invalid username or password");
+        const loginFailMessage = "Invalid username or password";
+        const encodedMessage = encodeURIComponent(loginFailMessage);
+        res.redirect(`/?loginFail=${encodedMessage}`);
       }
     } catch (error) {
       console.error(error);

@@ -1,20 +1,20 @@
 const db = require("../db");
 const helper = require("../helper");
 const config = require("../config");
+const database = require("../../services//firebase/config");
 
-async function fetchDataFromTable(query, page = 1) {
+async function fetchDataFromTable(query) {
   const rows = await db.query(query);
   const data = helper.emptyOrRows(rows);
-  const meta = { page };
+
   return {
     data,
-    meta,
   };
 }
 
-async function getAll(page = 1) {
-  const query = `SELECT * FROM Sensors`;
-  return fetchDataFromTable(query, page);
+async function getAll(tableName = "Sensors") {
+  const query = `SELECT * FROM List_Sensor_${tableName}`;
+  return fetchDataFromTable(query);
 }
 
 async function getHistory(page = 1) {
@@ -39,6 +39,30 @@ async function getSchedule(page = 1) {
   };
 }
 
+async function updateSensorValues(params) {
+  const tableName = params?.[0];
+  const values = params?.[1]?.split("-");
+  const promises = values.map((value, index) => {
+    const query = `UPDATE List_Sensor_${tableName} SET value = ? WHERE sensor_id = ?`;
+    const params = [value, `sensor_${index + 1}`];
+    return db.query(query, params);
+  });
+
+  // database
+  //   .ref("/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/Wietech")
+  //   .on("value", (snapshot) => {
+  //     const dataSensor = snapshot.val().sensors;
+  //     for (const sensorKey in dataSensor) {
+  //       database
+  //         .ref(
+  //           `/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/Wietech/sensors/${sensorKey}/value`
+  //         )
+  //         .set(values[Object.keys(dataSensor).indexOf(sensorKey)].toString());
+  //     }
+  //   });
+  return Promise.all(promises);
+}
+
 async function updateSensor(data) {
   const query =
     "UPDATE Sensors SET pressure = ?, time_updated = ? WHERE sensor_id = ?";
@@ -51,4 +75,5 @@ module.exports = {
   updateSensor,
   getHistory,
   getSchedule,
+  updateSensorValues,
 };

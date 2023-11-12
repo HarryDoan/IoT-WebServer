@@ -1,7 +1,32 @@
-const { getAll, updateSensor } = require("./sensorDatabase");
+const {
+  getAll,
+  updateSensor,
+  updateSensorValues,
+} = require("./sensorDatabase");
 
-const getAllSensors = async () => {
-  return await getAll();
+const getAllSensors = async (tableName) => {
+  return await getAll(tableName);
+};
+
+const updateSensorValue = async (params) => {
+  // const formattedDate = new Date().toLocaleString("en-US", {
+  //   timeZone: "Asia/Bangkok",
+  //   year: "numeric",
+  //   month: "2-digit",
+  //   day: "2-digit",
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  //   second: "2-digit",
+  // });
+
+  // const dataUpdated = {
+  //   ...changes,
+  //   time_updated: formattedDate,
+  // };
+
+  await updateSensorValues(params);
+
+  return params;
 };
 
 const updateOneSensor = async (changes) => {
@@ -28,4 +53,5 @@ const updateOneSensor = async (changes) => {
 module.exports = {
   getAllSensors,
   updateOneSensor,
+  updateSensorValue,
 };

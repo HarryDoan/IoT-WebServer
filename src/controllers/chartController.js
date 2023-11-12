@@ -2,7 +2,9 @@ const database = require("../database/sensor/sensorDatabase");
 
 class ChartController {
   async chart(req, res) {
-    const r = await database.getAll();
+    res.locals.title = "Chart";
+
+    // const r = await database.getAll("917756715");
     res.render("chart", {
       admin: "Wietech",
     });

@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const userService = require("../services/userService");
+const userService = require("../../services/userService");
 const { v4: uuid } = require("uuid");
 
 let userId = null;

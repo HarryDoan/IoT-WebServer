@@ -1,16 +1,10 @@
 const express = require("express");
-const sensorController = require("../../controllers/sensorController");
+const sensorController = require("../../controllers/api/sensorController");
 
 const router = express.Router();
 
-router.get("/", sensorController.getAllSensors);
+router.get("/:slug", sensorController.getAllSensors);
 
-router.get("/:SensorId", sensorController.getOneSensor);
-
-// router.post("/", sensorController.createNewSensor);
-
-router.post("/", sensorController.updateOneSensor);
-
-// router.delete("/:SensorId", sensorController.deleteOneSensor);
+router.post("/:slug", sensorController.updateSensorValue);
 
 module.exports = router;

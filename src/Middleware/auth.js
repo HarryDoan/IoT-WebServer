@@ -12,7 +12,7 @@ function authenticateToken(req, res, next) {
     if (err) {
       return res.redirect("/");
     }
-
+    res.locals.user = decoded?.userPhone;
     next();
   });
 }

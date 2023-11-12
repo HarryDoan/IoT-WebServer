@@ -1,189 +1,140 @@
-<div class="px-4">
-    <div class="row g-3 my-2">
-        {{#each data}}
-            <div class="row shadow-sm text-center col mx-3 ">
-                <h1 class="text-center text-white bg-secondary bg-gradient">{{this.valve_name}}</h1>
-                <div class="col bg-dark bg-gradient">
-                    <a class="col btn">
-                        <!-- <img src="https://dlsgc.com.vn/wp-content/uploads/2021/07/bo-loc-afa-247x247.jpg" alt="" class="card-img-top  "> -->
-                        <div class="card-body">
-                            <div class="row">
-                                <h5 class="col text-end text-white">Status:</h5>
-                                <h5
-                                    class=" col justify-content-start {{#if this.valve_status}} text-success  {{else}} text-danger {{/if}} ">
-                                    {{#if this.valve_status}} ON {{else}} OFF {{/if}}
-                                </h5>
-                            </div>
-                            <div class="row ">
-                                <h5 class="col text-end text-white">Mode:</h5>
-                                <div class="col  justify-content-start form-check form-switch parent">
-                                    <input type="checkbox" id="{{concat 'togBtn' @index}}" value="true"
-                                        class="form-check-input" checked>
-                                </div>
-                            </div>
-                            <!-- <p class="fs-5 fw-bold text-primary">{{this.data.age}}</p> -->
-                        </div>
-                    </a>
-                </div>
-                <div class="col bg-info bg-gradient">
-                    <form class="col col-lg-6 text-center parent" action="/" method="POST"
-                        id="form-schedule-valve_{{@index}}">
-                        <!-- <span class="">Van 1</span> -->
-                        <div class="text-center">
-                            <div class="col mt-3 d-flex justify-content-center">
-                                <input name="date" id="startDate_{{@index}}" class="form-control" type="date"
-                                    value="" />
-                            </div>
-                            <div class="col mt-3">
-                                <input name="time" id="startTime_{{@index}}" type="time" class="form-control" />
+<div class="container-fluid d-flex justify-content-center">
+    <div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Button</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form>
+                        <div class="mb-3">
+                            <div><label style="font-size: 18px; margin-left: 20px; margin-top: 20px;"
+                                    class="form-label">Button Name</label>
+                                <input style=" width: 90%; margin-left: 20px;" type="text" class="form-control"
+                                    id="btn-name" aria-describedby="emailHelp">
                             </div>
                         </div>
-                        <form id="switch-valve_{{@index}}" method="POST" class="form-schedule_{{@index}}">
-                            <div class="form-check form-switch parent container-fluid justify-content-start mt-3">
-                                <input type="checkbox" id="togBtnSchedule_{{@index}}" value="true"
-                                    class="form-check-input" checked>
+                        <div class="mb-3 d-flex justify-content-center">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                    data-bs-toggle="dropdown" aria-expanded="false"> Button Type </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="#">Light</a></li>
+                                    <li><a class="dropdown-item" href="#">Fan</a></li>
+                                    <li><a class="dropdown-item" href="#">Motor</a></li>
+                                </ul>
                             </div>
-                        </form>
-                        <button id="submit_{{@index}}" type="submit"
-                            class="container-fluid btn btn-primary my-3">Lưu</button>
+                        </div>
                     </form>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button style="margin-right: 30px;" type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
                 </div>
             </div>
-        {{/each}}
-        <!-- <div class="card bg-primary text-white" style="width: 200px;">
-            <div class="card-body d-flex justify-content-center align-items-center rounded-circle"
-                style="height: 200px;">
-                <h1>Circle Card</h1>
+        </div>
+    </div>
+    <div class="container-fluid" style="border-radius: 10px; padding-top: 25px; padding-inline: 15px;">
+        <h3 class="text-center font-semibold text-2xl lg:text-4xl text-stone-600">Sensors</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4 mt-2">{{#each dataSensor}}
+                <div id="{{@key}}" class="rounded-lg drop-shadow-lg bg-slate-50">
+                    <div class="h-auto mx-3 my-2">
+                        <div class="text-center text-stone-600 text-sm font-bold">
+                            <span>{{title}}</span>
+                        </div>
+                        <div class="text-center text-orange-600 text-4xl font-bold">
+                            <h1>{{value}}</h1>
+                        </div>
+                        <hr class="w-4/5 bg-neutral-800 my-2 mx-auto">
+                        </hr>
+                        <div class="text-center text-stone-600 text-lg font-medium  justify-self-end">
+                            <h4 class="inline-block">{{name}}</h4>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}</div>
+        <hr class="w-full bg-stone-600 mx-auto mt-12 mb-8 rounded-lg" style="height: 3px">
+        <div class="">
+            <h3 class="text-center font-semibold text-2xl lg:text-4xl text-stone-600">Switches</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4 mt-2">
+                {{#each dataSwitch}}
+                    <div id="{{switch_id}}" class="rounded-lg drop-shadow-lg bg-slate-50">
+                        <div class=" mx-3 my-2 w-auto h-auto rounded-lg">
+                            <h4 class="text-center text-stone-600 text-sm font-bold">{{title}}</h4>
+                            <div class="mt-2 mx-auto w-12 h-12 grid justify-items-center content-center toggle-switch">
+                                <img src="{{#if value}}img/power_on_new.png{{else}}img/power_off_new.png{{/if}}"
+                                    class="rounded-lg float-start img-responsive power-switch img-{{switch_id}}"
+                                    alt="power">
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
             </div>
-        </div> -->
+        </div>
     </div>
 </div>
 <script>
     const socket = io();
-    let switchStatusValveSchedule = true;
+    const database = firebase.database();
 
-    // const userToken = document.getElementById('user_token');
-    // const userTokenContent = userToken.textContent;
-    // if (!userTokenContent) {
-    //     window.location.href = `./`;
-    // }
-    // else {
-    //     userToken.textContent = '';
-    // }
+    database.ref('/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/Wietech').on('value', snapshot => {
+        const dataSensor = snapshot.val().sensors;
+        const dataSwitch1 = snapshot.val().switches1;
 
+        socket.on('sensor_data', (e) => {
 
+            for (let i = 0; i < e?.data?.length; i++) {
+                const value = e?.data[i]?.value;
+                const element = document.getElementById(e?.data[i]?.sensor_id);
 
-    $(document).ready(function () {
-        $('input[type="checkbox"]').click(function () {
-            var checkboxId = $(this).attr('id');
-            var isChecked = $(this).is(':checked');
-            console.log('Checkbox with ID ' + checkboxId + ' is ' + (isChecked ? 'checked' : 'unchecked'));
+                if (element) {
+                    element.querySelector('.fw-bold').textContent = value;
+                }
+
+            }
+        })
+
+        socket.on('switch_data', (e) => {
+            for (let i = 0; i < e?.data?.length; i++) {
+                const value = +e?.data[i]?.value;
+                const switchId = e?.data[i]?.switch_id;
+                const imgElement = document.querySelector(`.img-${switchId}`);
+                console.log(imgElement);
+
+                if (imgElement) {
+                    const imageSrc = value ? 'img/power_on_new.png' : 'img/power_off_new.png';
+                    imgElement.src = imageSrc;
+                }
+            }
         });
 
-        //Schedule
-        let currentTime = new Date().toLocaleTimeString().split(" ")[0].slice(0, 5);
-        const f = new Date();
 
-        let startDate1 = document.getElementById('startDate_1');
-        if (startDate1 !== null) {
-            startDate1.valueAsDate = new Date(f.getFullYear(), f.getMonth(), f.getDate(), 12);
-        }
 
-        let startDate2 = document.getElementById('startDate_2');
-        if (startDate2 !== null) {
-            startDate2.valueAsDate = new Date(f.getFullYear(), f.getMonth(), f.getDate(), 12);
-        }
-
-        let startDate3 = document.getElementById('startDate_0');
-        if (startDate3 !== null) {
-            startDate3.valueAsDate = new Date(f.getFullYear(), f.getMonth(), f.getDate(), 12);
-        }
-
-        let startTime1 = document.getElementById("startTime_1");
-        if (startTime1 !== null) {
-            startTime1.value = currentTime;
-        }
-
-        let startTime2 = document.getElementById("startTime_2");
-        if (startTime2 !== null) {
-            startTime2.value = currentTime;
-        }
-
-        let startTime3 = document.getElementById("startTime_0");
-        if (startTime3 !== null) {
-            startTime3.value = currentTime;
+        const toggleSwitches = document.getElementsByClassName('toggle-switch');
+        for (let i = 0; i < toggleSwitches.length; i++) {
+            const toggleSwitch = toggleSwitches[i];
+            const clonedToggleSwitch = toggleSwitch.cloneNode(true);
+            toggleSwitch.replaceWith(clonedToggleSwitch);
         }
 
 
-        // submit schedule-valve1
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < toggleSwitches.length; i++) {
+            toggleSwitches[i].addEventListener('click', function () {
+                const currentValue = +dataSwitch1[i]?.value;
+                const updatedValue = currentValue === 0 ? 1 : 0;
+                const imgElement = this.querySelector('img');
+                const imageSrc = updatedValue ? 'img/power_on_new.png' : 'img/power_off_new.png';
+                imgElement.src = imageSrc;
 
-            // $(`#submit_${i}`).click(function () {
-            //     $.post($(`#form-schedule-valve_${i}`).attr("action"),
-            //         $(`#form-schedule-valve_${i} :input`).serializeArray(),
-            //         function (info) {
+                // Update the value
+                database.ref(`/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/Wietech/switches1/${i}`).set({ ...dataSwitch1[i], value: updatedValue });
 
-            //             $("#response").empty();
-            //             $("#response").html(info);
-            //             socket.emit(`date_time_${i}`, {
-            //                 schedule: $(`#form-schedule-valve_${i} :input`).serializeArray(),
-            //                 status_btn: switchStatusValveSchedule,
-            //             })
-            //             console.log('====================================');
-            //             console.log($(`#form-schedule-valve_${i} :input`).serializeArray());
-            //             console.log('====================================');
-            //         });
-
-            //     $(`#form-schedule-valve_${i}`).submit(function () {
-            //         return false;
-            //     });
-            // });
-
-            document.getElementById(`submit_${i}`)?.addEventListener("click", function (event) {
-                event.preventDefault(); // prevent the default form submission
-
-                // get the value of the date and time inputs
-                const dateInput = document.getElementById(`startDate_${i}`);
-                const timeInput = document.getElementById(`startTime_${i}`);
-                const dateValue = dateInput.value;
-                const timeValue = timeInput.value;
-
-                // extract the hour and minute from the time value
-                const [hour, minute] = timeValue.split(":");
-
-                // create a new Date object with the selected date and time
-                const selectedDate = new Date(`${dateValue}T${timeValue}`);
-
-                // log the selected date and time to the console
-
-                socket.emit(`date_time_${i}`, {
-                    schedule: {
-                        date: selectedDate, Hour: hour, Minute: minute
-                    },
-                    status_btn: switchStatusValveSchedule,
-                })
-                console.log(`Selected date and time: ${selectedDate}, Hour: ${hour}, Minute: ${minute}`);
-            });
-
-            //schedule btn status
-            // $('input[type="checkbox"]').click(function () {
-            //     var checkboxId = $(this).attr('id');
-            //     var isChecked = $(this).is(':checked');
-            //     console.log('Checkbox with ID ' + checkboxId + ' is ' + (isChecked ? 'checked' : 'unchecked'));
-            // });
-            $(`#togBtnSchedule_${i}`).on('change', function () {
-                if ($(this).is(':checked')) {
-                    switchStatusValveSchedule = $(this).is(':checked');
-
-
-                } else {
-                    switchStatusValveSchedule = $(this).is(':checked');
-
-                }
+                socket.emit('updateSwitches', { ...dataSwitch1[i], value: updatedValue });
             });
         }
+
     });
-
-
 
 </script>

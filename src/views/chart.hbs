@@ -48,7 +48,7 @@
         }) || []
 
         let formChartLabels = e?.map(item => {
-            return item?.time
+            return item?.time?.split("  ")?.[1]
         }) || []
         if (myChart !== null) {
             myChart.destroy();
@@ -87,19 +87,22 @@
                         }
                     },
 
-                }
+                },
+
+
             }
         });
 
         intervalId = setInterval(() => {
             let today = new Date();
             let time = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear() + "  " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            let time_show = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
             if (formChartDataV1?.length > 9) {
 
                 formChartDataV1.push(dataSensorV1);
                 formChartDataV2.push(dataSensorV2);
-                formChartLabels.push(time);
+                formChartLabels.push(time_show);
                 myChart.update()
                 formChartDataV1.shift()
                 formChartDataV2.shift()

