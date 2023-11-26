@@ -1,42 +1,10 @@
 <div class="container-fluid d-flex justify-content-center">
-    <div>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add New Button</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form>
-                        <div class="mb-3">
-                            <div><label style="font-size: 18px; margin-left: 20px; margin-top: 20px;"
-                                    class="form-label">Button Name</label>
-                                <input style=" width: 90%; margin-left: 20px;" type="text" class="form-control"
-                                    id="btn-name" aria-describedby="emailHelp">
-                            </div>
-                        </div>
-                        <div class="mb-3 d-flex justify-content-center">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                    data-bs-toggle="dropdown" aria-expanded="false"> Button Type </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">Light</a></li>
-                                    <li><a class="dropdown-item" href="#">Fan</a></li>
-                                    <li><a class="dropdown-item" href="#">Motor</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="modal-footer d-flex justify-content-center">
-                        <button style="margin-right: 30px;" type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container-fluid" style="border-radius: 10px; padding-top: 25px; padding-inline: 15px;">
+        <div class="grid justify-items-end">
+            <button class="text-white font-bold py-2 px-4 rounded" onclick="openModalSensor()">
+                <img src="img/add.png" class="w-10 h-10 object-cover">
+            </button>
+        </div>
         <h3 class="text-center font-semibold text-2xl lg:text-4xl text-stone-600">Sensors</h3>
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4 mt-2">{{#each dataSensor}}
                 <div id="{{@key}}" class="rounded-lg drop-shadow-lg bg-slate-50">
@@ -57,16 +25,22 @@
             {{/each}}</div>
         <hr class="w-full bg-stone-600 mx-auto mt-12 mb-8 rounded-lg" style="height: 3px">
         <div class="">
+            <div class="grid justify-items-end">
+                <button class="text-white font-bold py-2 px-4 rounded" onclick="openModalSwitch()">
+                    <img src="img/add.png" class="w-10 h-10 object-cover">
+                </button>
+            </div>
             <h3 class="text-center font-semibold text-2xl lg:text-4xl text-stone-600">Switches</h3>
             <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4 mt-2">
                 {{#each dataSwitch}}
                     <div id="{{switch_id}}" class="rounded-lg drop-shadow-lg bg-slate-50">
-                        <div class=" mx-3 my-2 w-auto h-auto rounded-lg">
+                        <div class="mx-3 my-2 w-auto h-auto rounded-lg">
                             <h4 class="text-center text-stone-600 text-sm font-bold">{{title}}</h4>
-                            <div class="mt-2 mx-auto w-12 h-12 grid justify-items-center content-center toggle-switch">
-                                <img src="{{#if value}}img/power_on_new.png{{else}}img/power_off_new.png{{/if}}"
-                                    class="rounded-lg float-start img-responsive power-switch img-{{switch_id}}"
-                                    alt="power">
+                            <div
+                                class="mt-2 mx-auto w-12 h-12 grid justify-items-center content-center toggle-switch relative">
+                                <img src="img/fan_off.png"
+                                    class="rounded-lg float-start img-responsive power-switch img-{{switch_id}} cursor-pointer"
+                                    alt="power" onclick="handleImageClick('{{switch_id}}')">
                             </div>
                         </div>
                     </div>
@@ -74,67 +48,161 @@
             </div>
         </div>
     </div>
-</div>
-<script>
-    const socket = io();
-    const database = firebase.database();
+    <div class="h-full">
+        <div id="myModal" class="fixed top-0 left-0 z-50 w-full h-full backdrop-filter backdrop-blur-sm hidden">
+            <div class="mx-auto max-w-md bg-white rounded-lg p-5 drop-shadow-lg mt-16">
+                <h2 class="text-2xl font-bold text-center mb-4">Add New Sensor</h2>
+                <form>
+                    <div class="mb-3">
+                        <label for="firstName" class="block text-gray-700 font-bold">Title</label>
+                        <input placeholder="Humidity" type="text" id="firstName" name="firstName"
+                            class="w-full rounded-lg border border-gray-300 py-2 px-2 text-gray-700 font-medium"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="block text-gray-700 font-bold">Unit</label>
+                        <input placeholder="%" type="text" id="lastName" name="lastName"
+                            class="w-full rounded-lg border border-gray-300 py-2 px-2 text-gray-700 font-medium"
+                            required>
+                    </div>
+                    <div class="grid">
+                        <button type="submit"
+                            class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg border-2 border-sky-600">Submit</button>
+                    </div>
+                </form>
+                <div class="grid">
+                    <button class="text-gray-600 font-bold text-center border-2 mt-4 py-2 px-4 rounded-lg"
+                        onclick="closeModalSensor()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="h-full">
+        <div id="myModalSwitch" class="fixed top-0 left-0 z-50 w-full h-full backdrop-filter backdrop-blur-sm hidden">
+            <div class="mx-auto max-w-md bg-white rounded-lg p-5 drop-shadow-lg mt-16">
+                <h2 class="text-2xl font-bold text-center mb-4">Add New Switch</h2>
+                <form>
+                    <div class="mb-3">
+                        <label for="firstName" class="block text-gray-700 font-bold">Title</label>
+                        <input placeholder="Switch 1" type="text" id="firstName" name="firstName"
+                            class="w-full rounded-lg border border-gray-300 py-2 px-2 text-gray-700 font-medium"
+                            required>
+                    </div>
+                    <div class="grid">
+                        <button type="submit"
+                            class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg border-2 border-sky-600">Submit</button>
+                    </div>
+                </form>
+                <div class="grid">
+                    <button class="text-gray-600 font-bold text-center border-2 mt-2 py-2 px-4 rounded-lg"
+                        onclick="closeModalSwitch()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="background-color: rgba(51, 65, 85, 0.75);" id="loadingOverlay"
+        class="fixed inset-0 flex items-center justify-center rounded-lg hidden">
+        <h4 class="text-white">Loading...</h4>
+    </div>
+    <script>
+        const socket = io();
+        const database = firebase.database();
 
-    database.ref('/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/Wietech').on('value', snapshot => {
-        const dataSensor = snapshot.val().sensors;
-        const dataSwitch1 = snapshot.val().switches1;
+        database.ref('/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/Wietech').on('value', snapshot => {
+            const dataSensor = snapshot.val().sensors;
+            const dataSwitch1 = snapshot.val().switches1;
 
-        socket.on('sensor_data', (e) => {
+            socket.on('sensor_data', (e) => {
 
-            for (let i = 0; i < e?.data?.length; i++) {
-                const value = e?.data[i]?.value;
-                const element = document.getElementById(e?.data[i]?.sensor_id);
+                for (let i = 0; i < e?.data?.length; i++) {
+                    const value = e?.data[i]?.value;
+                    const element = document.getElementById(e?.data[i]?.sensor_id);
 
-                if (element) {
-                    element.querySelector('.fw-bold').textContent = value;
+                    if (element) {
+                        element.querySelector('.fw-bold').textContent = value;
+                    }
+
                 }
+            })
 
+            socket.on('switch_data', (e) => {
+                for (let i = 0; i < e?.data?.length; i++) {
+                    const value = +e?.data[i]?.value;
+                    const type = +e?.data[i]?.type;
+                    const switchId = e?.data[i]?.switch_id;
+                    const imgElement = document.querySelector(`.img-${switchId}`);
+
+
+                    if (imgElement) {
+                        const imageSrc = value && type === 1 ? 'img/fan_on.png' : !value && type === 1 ? 'img/fan_off.png' : value && type === 2 ? 'img/pump_on.png' : 'img/pump_off.png';
+                        imgElement.src = imageSrc;
+                    }
+                }
+            });
+
+
+
+            const toggleSwitches = document.getElementsByClassName('toggle-switch');
+            for (let i = 0; i < toggleSwitches.length; i++) {
+                const toggleSwitch = toggleSwitches[i];
+                const clonedToggleSwitch = toggleSwitch.cloneNode(true);
+                toggleSwitch.replaceWith(clonedToggleSwitch);
             }
-        })
 
-        socket.on('switch_data', (e) => {
-            for (let i = 0; i < e?.data?.length; i++) {
-                const value = +e?.data[i]?.value;
-                const switchId = e?.data[i]?.switch_id;
-                const imgElement = document.querySelector(`.img-${switchId}`);
-                console.log(imgElement);
 
-                if (imgElement) {
-                    const imageSrc = value ? 'img/power_on_new.png' : 'img/power_off_new.png';
+            for (let i = 0; i < toggleSwitches.length; i++) {
+
+                toggleSwitches[i].addEventListener('click', function () {
+                    handleImageClick()
+                    const currentValue = +dataSwitch1[i]?.value;
+                    const type = +dataSwitch1[i]?.type;
+
+                    const updatedValue = currentValue === 0 ? 1 : 0;
+                    const imgElement = this.querySelector('img');
+                    const imageSrc = currentValue && type === 1 ? 'img/fan_on.png' : !currentValue && type === 1 ? 'img/fan_off.png' : currentValue && type === 2 ? 'img/pump_on.png' : 'img/pump_off.png';
                     imgElement.src = imageSrc;
-                }
+
+
+                    database.ref(`/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/Wietech/switches1/${i}`).set({ ...dataSwitch1[i], value: updatedValue });
+
+                    socket.emit('updateSwitches', { ...dataSwitch1[i], value: updatedValue });
+                });
             }
+
         });
 
 
+        function handleImageClick() {
+            const loadingOverlay = document.getElementById(`loadingOverlay`);
+            loadingOverlay.classList.remove('hidden');
 
-        const toggleSwitches = document.getElementsByClassName('toggle-switch');
-        for (let i = 0; i < toggleSwitches.length; i++) {
-            const toggleSwitch = toggleSwitches[i];
-            const clonedToggleSwitch = toggleSwitch.cloneNode(true);
-            toggleSwitch.replaceWith(clonedToggleSwitch);
+            setTimeout(() => {
+                loadingOverlay.classList.add('hidden');
+            }, 1000);
         }
 
 
-        for (let i = 0; i < toggleSwitches.length; i++) {
-            toggleSwitches[i].addEventListener('click', function () {
-                const currentValue = +dataSwitch1[i]?.value;
-                const updatedValue = currentValue === 0 ? 1 : 0;
-                const imgElement = this.querySelector('img');
-                const imageSrc = updatedValue ? 'img/power_on_new.png' : 'img/power_off_new.png';
-                imgElement.src = imageSrc;
 
-                // Update the value
-                database.ref(`/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/Wietech/switches1/${i}`).set({ ...dataSwitch1[i], value: updatedValue });
-
-                socket.emit('updateSwitches', { ...dataSwitch1[i], value: updatedValue });
-            });
+        function openModalSensor() {
+            document.getElementById('myModal').classList.remove('hidden');
         }
 
-    });
+        function closeModalSensor() {
+            document.getElementById('myModal').classList.add('hidden');
+        }
 
-</script>
+        function openModalSwitch() {
+            document.getElementById('myModalSwitch').classList.remove('hidden');
+        }
+
+        function closeModalSwitch() {
+            document.getElementById('myModalSwitch').classList.add('hidden');
+        }
+
+        window.onload = function () {
+            closeModal();
+        };
+
+
+
+    </script>

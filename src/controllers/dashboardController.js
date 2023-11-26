@@ -12,7 +12,7 @@ class DashboardController {
     const switches = await switchDatabase.getAll(phone);
     const dataSwitch = switches.data;
     const newDataSwitch = dataSwitch?.map((item) => {
-      return { ...item, value: +item?.value };
+      return { ...item, value: +item?.value, type: +item?.type };
     });
     database
       .ref(`/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/${admin}/switches1`)
