@@ -38,8 +38,29 @@ async function updateSwitchValuesByID(switchParams, tableName = "917756715") {
   return db.query(query, params);
 }
 
+async function addNewSwitch(switchParams) {
+  const tableName = "917756715";
+  const value = 0;
+  const switchId = switchParams?.switch_id;
+  const type = switchParams?.type;
+  const title = switchParams?.title;
+  const name = switchParams?.title;
+
+  const query = `INSERT INTO List_Switch_${tableName} (switch_id, value, type, title, name) VALUES (?, ?, ?, ?, ?)`;
+  const params = [switchId, value, type, title, name];
+
+  try {
+    const result = await db.query(query, params);
+    return { success: true, insertedRow: result[0] };
+  } catch (error) {
+    console.error("Error adding new switch:", error);
+    return { success: false, error: "Failed to add new switch" };
+  }
+}
+
 module.exports = {
   getAll,
   updateSwitchValues,
   updateSwitchValuesByID,
+  addNewSwitch,
 };

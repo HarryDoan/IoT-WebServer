@@ -2,6 +2,7 @@ const {
   getAll,
   updateSensor,
   updateSensorValues,
+  addNewSensor,
 } = require("./sensorDatabase");
 
 const getAllSensors = async (tableName) => {
@@ -50,8 +51,15 @@ const updateOneSensor = async (changes) => {
   return dataUpdated;
 };
 
+const addSensor = async (params) => {
+  await addNewSensor(params);
+
+  return params;
+};
+
 module.exports = {
   getAllSensors,
   updateOneSensor,
   updateSensorValue,
+  addSensor,
 };

@@ -9,6 +9,8 @@ const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 const switchDatabase = require("../database/switch/switchDatabase");
 const sensorDatabase = require("../database/sensor/sensorDatabase");
+const { addSwitch } = require("../database/switch");
+const { v4: uuidv4 } = require("uuid");
 class SocketServices {
   connection(socket) {
     socket.on("disconnect", () => {
@@ -105,6 +107,16 @@ class SocketServices {
         });
         socket.emit("list_history_Mysql", data);
       });
+    });
+
+    socket.on("addSwitch", (e) => {
+      const uid = uuidv4();
+      addSwitch({ ...e, switch_id: uid });
+    });
+
+    socket.on("addSensor", (e) => {
+      const uid = uuidv4();
+      dbSensor.addNewSensor({ ...e, sensor_id: uid });
     });
 
     for (let i = 0; i < 3; i++) {

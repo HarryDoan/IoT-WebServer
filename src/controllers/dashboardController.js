@@ -10,23 +10,33 @@ class DashboardController {
     const phone = res.locals.user;
 
     const switches = await switchDatabase.getAll(phone);
+    const sensors = await sensorDatabase.getAll(phone);
+
     const dataSwitch = switches.data;
+    const dataSensor = sensors.data;
     const newDataSwitch = dataSwitch?.map((item) => {
       return { ...item, value: +item?.value, type: +item?.type };
+    });
+
+    const newDataSensor = dataSensor?.map((item) => {
+      return { ...item, value: +item?.value };
     });
     database
       .ref(`/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/${admin}/switches1`)
       .set(newDataSwitch);
+    database
+      .ref(`/EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk/${admin}/sensor1V2`)
+      .set(newDataSensor);
     const refSensorsRealtime = dbrt
       .ref("EWA4tWTQAgiVf9AJiYbAxUKsew2lbZqk")
       .child(admin);
 
     const callback = (snapshot) => {
       const dataSensor = snapshot.val()?.sensors;
-      // const dataSwitch = snapshot.val()?.switches1;
       res.render("dashboard", {
         title: res.locals.title,
-        dataSensor,
+        dataSensor: newDataSensor,
+        // dataSensor,
         dataSwitch: newDataSwitch,
       });
 

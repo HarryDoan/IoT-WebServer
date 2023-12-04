@@ -7,7 +7,7 @@
         </div>
         <h3 class="text-center font-semibold text-2xl lg:text-4xl text-stone-600">Sensors</h3>
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4 mt-2">{{#each dataSensor}}
-                <div id="{{@key}}" class="rounded-lg drop-shadow-lg bg-slate-50">
+                <div id="{{sensor_id}}" class="rounded-lg drop-shadow-lg bg-slate-50">
                     <div class="h-auto mx-3 my-2">
                         <div class="text-center text-stone-600 text-sm font-bold">
                             <span>{{title}}</span>
@@ -18,7 +18,7 @@
                         <hr class="w-4/5 bg-neutral-800 my-2 mx-auto">
                         </hr>
                         <div class="text-center text-stone-600 text-lg font-medium  justify-self-end">
-                            <h4 class="inline-block">{{name}}</h4>
+                            <h5 class="inline-block">(<span>{{suffix}}</span>)</h5>
                         </div>
                     </div>
                 </div>
@@ -54,24 +54,24 @@
                 <h2 class="text-2xl font-bold text-center mb-4">Add New Sensor</h2>
                 <form>
                     <div class="mb-3">
-                        <label for="firstName" class="block text-gray-700 font-bold">Title</label>
-                        <input placeholder="Humidity" type="text" id="firstName" name="firstName"
+                        <label for="sensorTitle" class="block text-gray-700 font-bold">Title</label>
+                        <input placeholder="Humidity" type="text" id="sensorTitle" name="sensorTitle"
                             class="w-full rounded-lg border border-gray-300 py-2 px-2 text-gray-700 font-medium"
                             required>
                     </div>
                     <div class="mb-3">
-                        <label for="lastName" class="block text-gray-700 font-bold">Unit</label>
-                        <input placeholder="%" type="text" id="lastName" name="lastName"
+                        <label for="sensorUnit" class="block text-gray-700 font-bold">Unit</label>
+                        <input placeholder="%" type="text" id="sensorUnit" name="sensorUnit"
                             class="w-full rounded-lg border border-gray-300 py-2 px-2 text-gray-700 font-medium"
                             required>
                     </div>
                     <div class="grid">
-                        <button type="submit"
+                        <button onclick="submitSensorForm()" type="submit"
                             class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg border-2 border-sky-600">Submit</button>
                     </div>
                 </form>
                 <div class="grid">
-                    <button class="text-gray-600 font-bold text-center border-2 mt-4 py-2 px-4 rounded-lg"
+                    <button class="text-gray-600 font-bold text-center border-2 mt-2 py-2 px-4 rounded-lg"
                         onclick="closeModalSensor()">Close</button>
                 </div>
             </div>
@@ -83,20 +83,44 @@
                 <h2 class="text-2xl font-bold text-center mb-4">Add New Switch</h2>
                 <form>
                     <div class="mb-3">
-                        <label for="firstName" class="block text-gray-700 font-bold">Title</label>
-                        <input placeholder="Switch 1" type="text" id="firstName" name="firstName"
-                            class="w-full rounded-lg border border-gray-300 py-2 px-2 text-gray-700 font-medium"
-                            required>
+                        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                            class="w-full h- text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            type="button" onclick="toggleDropdown()">Dropdown button <svg class="w-2.5 h-2.5 ms-3"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 4 4 4-4" />
+                            </svg>
+                        </button>
+                        <div id="dropdown"
+                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="dropdownDefaultButton">
+                                <li>
+                                    <a href="#" onclick="selectItem('Fan')"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fan</a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="selectItem('Pump')"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pump</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="grid">
+                    <form id="myForm" class="grid">
+                        <div class="mb-3">
+                            <label for="customTitle" class="text-gray-700 dark:text-gray-200">Custom Title:</label>
+                            <input type="text" id="customTitle" name="customTitle"
+                                class="w-full border-2 border-gray-300 rounded-md p-2">
+                        </div>
+                        <input type="hidden" id="selectedItem" name="selectedItem" value="">
                         <button type="submit"
-                            class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg border-2 border-sky-600">Submit</button>
+                            class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg border-2 border-sky-600"
+                            onclick="submitSwitchForm()">Submit</button>
+                    </form>
+                    <div class="grid">
+                        <button class="text-gray-600 font-bold text-center border-2 mt-2 py-2 px-4 rounded-lg"
+                            onclick="closeModalSwitch()">Close</button>
                     </div>
-                </form>
-                <div class="grid">
-                    <button class="text-gray-600 font-bold text-center border-2 mt-2 py-2 px-4 rounded-lg"
-                        onclick="closeModalSwitch()">Close</button>
-                </div>
             </div>
         </div>
     </div>
@@ -114,12 +138,30 @@
 
             socket.on('sensor_data', (e) => {
 
+
                 for (let i = 0; i < e?.data?.length; i++) {
-                    const value = e?.data[i]?.value;
+                    const sensorData = e?.data[i];
                     const element = document.getElementById(e?.data[i]?.sensor_id);
 
                     if (element) {
-                        element.querySelector('.fw-bold').textContent = value;
+                        const updatedHTML = `
+                <div id="${sensorData?.sensor_id}" class="rounded-lg bg-slate-50">
+                    <div class="h-auto mx-3 my-2">
+                        <div class="text-center text-stone-600 text-sm font-bold">
+                            <span>${sensorData?.title}</span>
+                        </div>
+                        <div class="text-center text-orange-600 text-4xl font-bold">
+                            <h1>${sensorData?.value}</h1>
+                        </div>
+                        <hr class="w-4/5 bg-neutral-800 my-2 mx-auto">
+                        </hr>
+                        <div class="text-center text-stone-600 text-lg font-medium  justify-self-end">
+                            <h5 class="inline-block">(<span>${sensorData?.suffix}</span>)</h5>
+                        </div>
+                    </div>
+                </div>`;
+
+                        element.innerHTML = updatedHTML;
                     }
 
                 }
@@ -200,9 +242,55 @@
         }
 
         window.onload = function () {
-            closeModal();
+            closeModalSensor();
+            closeModalSwitch()
         };
 
+        let selectedItemId = '';
 
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        function selectItem(itemId) {
+            const dropdownButton = document.getElementById('dropdownDefaultButton');
+            dropdownButton.innerText = `Selected: ${itemId}`;
+
+            selectedItemId = itemId;
+
+            toggleDropdown();
+        }
+
+        function submitSwitchForm() {
+
+            document.getElementById('selectedItem').value = selectedItemId;
+
+            const type = selectedItemId == 'Fan' ? 1 : 2
+
+            const customTitle = document.getElementById('customTitle').value;
+            const params = {
+                value: 0,
+                type: type,
+                title: customTitle,
+                name: customTitle,
+
+            }
+            socket.emit('addSwitch', params);
+
+        }
+
+        function submitSensorForm() {
+            const title = document.getElementById('sensorTitle').value;
+            const unit = document.getElementById('sensorUnit').value;
+            const params = {
+
+                title: title,
+                unit: unit,
+            }
+            socket.emit('addSensor', params);
+
+
+        }
 
     </script>

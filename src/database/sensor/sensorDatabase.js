@@ -70,10 +70,30 @@ async function updateSensor(data) {
   return await db.query(query, params);
 }
 
+async function addNewSensor(sensorParams) {
+  const tableName = "917756715";
+  const value = 0;
+  const sensorId = sensorParams?.sensor_id;
+  const title = sensorParams?.title;
+  const name = sensorParams?.title;
+  const suffix = sensorParams?.unit;
+
+  const query = `INSERT INTO List_Sensor_${tableName} (sensor_id, value, suffix, title, name) VALUES (?, ?, ?, ?, ?)`;
+  const params = [sensorId, value, suffix, title, name];
+
+  try {
+    const result = await db.query(query, params);
+    return { success: true, insertedRow: result[0] };
+  } catch (error) {
+    console.error("Error adding new sensor:", error);
+    return { success: false, error: "Failed to add new sensor" };
+  }
+}
 module.exports = {
   getAll,
   updateSensor,
   getHistory,
   getSchedule,
   updateSensorValues,
+  addNewSensor,
 };
